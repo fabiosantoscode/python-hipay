@@ -18,7 +18,7 @@ account to use this package.
 SimplePayment
 -------------
 
-Sample::
+Code Sample::
 
         s = hipay.PaymentParams("YOUR_ITEM_ACCOUNT", "YOUR_TAX_ACCOUNT", "YOUR_INSURANCE_ACCOUNT", 
                                 "YOUR_FIXED_COST_ACCOUNT", "YOUR_SHIPPING_ACCPUNT")
@@ -78,8 +78,7 @@ MultiplePayment
 ---------------
 
 Code Sample::
-itemaccount, taxaccount, insuranceaccount,
-                 fixedcostaccount, shippingcostaccount):
+
         import hipay
         s = hipay.PaymentParams("YOUR_ITEM_ACCOUNT", "YOUR_TAX_ACCOUNT", "YOUR_INSURANCE_ACCOUNT", 
                                 "YOUR_FIXED_COST_ACCOUNT", "YOUR_SHIPPING_ACCPUNT")
