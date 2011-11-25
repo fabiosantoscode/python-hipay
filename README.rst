@@ -150,3 +150,68 @@ Code Sample::
         # Validate against the provided schema  https://payment.hipay.com/schema/mapi.xsd
         response = pay.SendPayment("https://test-payment.hipay.com/order/")
 
+
+Django Views
+------------
+
+Code Sample::
+
+    # urls
+    url(r'^hipay/(?P<invoice_id>\d+)$', 'invoice.views.hipay_invoice', name='hipay_invoice'),
+    url(r'^hipay/payment/(?P<action>cancel|ok|nook)/(?P<invoice_id>\d+)$', 'invoice.views.hipay_payment_url', name='hipay_payment_url'),
+    url(r'^hipay/result/ack/(?P<invoice_id>\d+)$', 'invoice.views.hipay_ipn_ack', name='hipay_ipn_ack'),
+
+    # views
+    ... 
+    base_host = "http%s://%s" %('s' if request.is_secure() else '',
+                                request.get_host())
+    s.setMerchantDatas({'invoice_id':invoice_id, 'customer':customer})
+    s.setURLOk("%s%s" % (base_host, reverse('hipay_payment_url', kwargs={'invoice_id':invoice_id, 'action':'ok'})))
+    s.setURLNok("%s%s" % (base_host, reverse('hipay_payment_url', kwargs={'invoice_id':invoice_id,'action':'nook'})))
+    s.setURLCancel("%s%s" % (base_host, reverse('hipay_payment_url', kwargs={'invoice_id':invoice_id,'action':'cancel'})))
+    s.setURLAck("%s%s" % (base_host, reverse('hipay_ipn_ack', kwargs={'invoice_id':invoice_id})))
+    s.setLogoURL("%s%s" % (base_host, reverse('hipay_shop_logo')))
+    ....
+
+    def hipay_payment_url(request, invoice_id, action):
+        """URL to redirect the client on canceled payment by the customer"""
+        invoice = get_object_or_404(Invoices, pk=invoice_id)
+        return render(request, 'invoice/hipay/%s_payment.html'%(action,), {'invoice':invoice})
+    
+
+    @require_http_methods(["POST"])
+    def hipay_ipn_ack(request, invoice_id):
+        """URL that get the ack from HIPAY"""
+        invoice = get_object_or_404(qs, id_facture=invoice_id)
+    
+        res = hipay.ParseAck(request.POST.get('xml', None))
+        if res.get('status', None) == 'ok':
+            invoice.is_paye = True
+            invoice.save()
+        # This is a bot that doesn't care
+        return HttpResponse("")
+
+
+ACK returned
+------------
+In the `hipay_ipn_ack below', the dictionary returned by hipay.ParseAck have these keys::
+
+           {'operation': ?
+            'status': ?
+            'date': ?
+            'time': ?
+            'transid': ?
+            'origAmount': ?
+            'origCurrency': ?
+            'idForMerchant': ?
+            'emailClient': ?
+            'merchantDatas': ?
+            'subscriptionId': ?
+            'refProduct': ?
+            'not_tempered_with': Boolean that compare the md5sum 
+                                 sent with the computed one
+             }
+
+You may be willing to save these data in a transaction model/table and use
+'merchantDatas' to identify the bills
+
