@@ -12,7 +12,6 @@ Contents:
    :maxdepth: 2
 
 
-
 Indices and tables
 ==================
 
@@ -23,10 +22,10 @@ Indices and tables
 python-hipay
 ============
 
-python-hipay is a tiny package that implements MAPI for hipay secure online
-payment (https://www.hipay.com/). The implementation is based on the doc
-(https://www.hipay.com/dl/kit_marchand_en.pdf). They also provide a php kit
-available at https://www.hipay.com/dl/hipay_mapi_php5_1_0.tgz.
+python-hipay is a tiny package that implements MAPI for hipay `secure online
+payment <https://www.hipay.com/>`_. The implementation is based `on their doc
+<https://www.hipay.com/dl/kit_marchand_en.pdf>`_. They also provide a
+`php library <https://www.hipay.com/dl/hipay_mapi_php5_1_0.tgz>`_.
 
 This module is experimental and currently actively developed.
 
@@ -269,3 +268,26 @@ In the `hipay_ipn_ack below', the dictionary returned by hipay.ParseAck have the
 You may be willing to save these data in a transaction model/table and use
 'merchantDatas' to identify the bills
 
+
+API Doc
+-------
+
+.. automodule:: hipay
+.. autoclass:: hipay.HiPay
+   :members:
+.. autoclass:: hipay.HiPayTree
+   :members:
+.. autoclass:: hipay.HiPay
+   :members:
+.. autoclass:: hipay.PaymentParams
+   :members:
+.. autoclass:: hipay.Tax
+   :members:
+.. autoclass:: hipay.Affiliate
+   :members:
+.. autoclass:: hipay.Product
+   :members:
+.. autoclass:: hipay.Installement
+   :members:
+.. autoclass:: hipay.Order
+   :members:
