@@ -6,13 +6,18 @@ payment (https://www.hipay.com/). The implementation is based on the doc
 (https://www.hipay.com/dl/kit_marchand_en.pdf). They also provide a php kit
 available at https://www.hipay.com/dl/hipay_mapi_php5_1_0.tgz.
 
-This module is experimental and currently developped.
+This module is experimental and currently actively developed.
 
 Usage
 -----
 
 You will indeed need at least a Merchant test account and a customer test
-account to use this package.
+account to use this package, I haven't figured out a way to put virtual money in
+my client test account, all the testing credit cards seems to already bound to
+some existing accounts and Hipay don't seem to allow sharing these cards among
+test accounts. You'll also need your test client account tight to your mobile
+since Hipay will send you a five digits verifiacation number for every payment
+you do with your client test account.
 
 
 SimplePayment
@@ -147,7 +152,7 @@ Code Sample::
         pay = hipay.HiPay(s)        
         pay.MultiplePayment(order, inst)
 
-        # Validate against the provided schema  https://payment.hipay.com/schema/mapi.xsd
+        # Validate against the provided schema https://payment.hipay.com/schema/mapi.xsd
         response = pay.SendPayment("https://test-payment.hipay.com/order/")
 
 
@@ -180,16 +185,45 @@ Code Sample::
     
 
     @require_http_methods(["POST"])
+    @csrf_exempt
     def hipay_ipn_ack(request, invoice_id):
         """URL that get the ack from HIPAY"""
+        # Use the Queryset qs that fits your needs
         invoice = get_object_or_404(qs, id_facture=invoice_id)
     
         res = hipay.ParseAck(request.POST.get('xml', None))
         if res.get('status', None) == 'ok':
             invoice.is_paye = True
             invoice.save()
-        # This is a bot that doesn't care
+        # Save the transaction for futur reference
+        Transaction.objects.create(**res)
+
+        # This is a bot that doesn't care about your response
         return HttpResponse("")
+
+A possible transaction model::
+
+class Transaction(models.Model):
+    status = models.CharField(max_length=255)
+    emailClient = models.EmailField()
+    date = models.DateField()
+    operation = models.CharField(max_length=255, null=True, blank=True)
+    transid =  models.CharField(max_length=255, null=True, blank=True)
+    merchantDatas = models.CharField(max_length=255, null=True, blank=True)
+    origCurrency = models.CharField(max_length=255)
+    origAmount  = models.CharField(max_length=255)
+    idForMerchant = models.CharField(max_length=255)
+    refProduct = models.CharField(max_length=255)
+    time = models.TimeField()
+    subscriptionId = models.CharField(max_length=255, null=True, blank=True)
+    not_tempered_with = models.BooleanField()
+    
+    def __unicode__(self):
+        return u"%s | %s | %s" % (
+            unicode(self.status),
+            unicode(self.transid),
+            unicode(self.refProduct))
+
 
 
 ACK returned
