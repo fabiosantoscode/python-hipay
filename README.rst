@@ -16,7 +16,7 @@ account to use this package, I haven't figured out a way to put virtual money in
 my client test account, all the testing credit cards seems to already bound to
 some existing accounts and Hipay don't seem to allow sharing these cards among
 test accounts. You'll also need your test client account tight to your mobile
-since Hipay will send you a five digits verifiacation number for every payment
+since Hipay will send you a five digits verification number for every payment
 you do with your client test account.
 
 
