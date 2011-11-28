@@ -26,7 +26,7 @@ SimplePayment
 Code Sample::
 
         s = hipay.PaymentParams("YOUR_ITEM_ACCOUNT", "YOUR_TAX_ACCOUNT", "YOUR_INSURANCE_ACCOUNT", 
-                                "YOUR_FIXED_COST_ACCOUNT", "YOUR_SHIPPING_ACCPUNT")
+                                "YOUR_FIXED_COST_ACCOUNT", "YOUR_SHIPPING_ACCOUNT")
         s.setBackgroundColor('#234567')
         s.setCaptureDay('6')
         s.setCurrency('EUR')
@@ -86,7 +86,7 @@ Code Sample::
 
         import hipay
         s = hipay.PaymentParams("YOUR_ITEM_ACCOUNT", "YOUR_TAX_ACCOUNT", "YOUR_INSURANCE_ACCOUNT", 
-                                "YOUR_FIXED_COST_ACCOUNT", "YOUR_SHIPPING_ACCPUNT")
+                                "YOUR_FIXED_COST_ACCOUNT", "YOUR_SHIPPING_ACCOUNT")
         s.setBackgroundColor('#234567')
         s.setCaptureDay('6')
         s.setCurrency('EUR')
