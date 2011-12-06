@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 #Copyright (C) 2011 ISVTEC SARL
-#$Id: hipay.py 711 2011-11-25 19:32:17Z wilane $
+#$Id$
 __author__ = "Ousmane Wilane ♟ <ousmane@wilane.org>"
 __date__   = "Wed Nov 16 07:40:23 2011"
 
@@ -151,7 +151,7 @@ class PaymentParams(HiPayTree):
         cancelled and this amount is made available once again to the customer."""
         self.captureday = captureday
         if (captureday in ('HIPAY_MAPI_CAPTURE_IMMEDIATE',
-                           'HIPAY_MAPI_CAPTURE_MANUAL')) or (str(captureday).isdigit() and 0 < int(captureday) < 7):
+                           'HIPAY_MAPI_CAPTURE_MANUAL')) or (str(captureday).isdigit() and 0 <= int(captureday) < 7):
             self.root = setTag(dict(captureDay=captureday), self.root)            
 
         else:
