@@ -25,7 +25,7 @@ import os
 import xml.etree.ElementTree as ET
 from lxml.etree import XMLSchema, XMLParser, fromstring, _Element
 import hipay
-from django.test import TestCase
+from unittest import TestCase
 import datetime
 DIRNAME = os.path.dirname(__file__)
 
@@ -36,7 +36,7 @@ class HiPayTest(TestCase):
         # Hipay credentials
         self.login = '9f5b8ba9c9feca32055f0b5a9bcffb74'
         self.password = '7a745b3328536de84831d5f55f56d74d'
-        self.schema = XMLSchema(file=open(os.path.join('hipay', 'mapi.xsd'), 'rb'), attribute_defaults=True)
+        self.schema = XMLSchema(file=open(os.path.join('mapi.xsd'), 'rb'), attribute_defaults=True)
         self.parser = XMLParser(schema=self.schema, attribute_defaults=True)
         
 
