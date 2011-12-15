@@ -6,7 +6,7 @@ payment (https://www.hipay.com/). The implementation is based on the doc
 (https://www.hipay.com/dl/kit_marchand_en.pdf). They also provide a php kit
 available at https://www.hipay.com/dl/hipay_mapi_php5_1_0.tgz.
 
-This module is experimental and currently developped.
+This module is experimental and currently developed.
 
 Usage
 -----
