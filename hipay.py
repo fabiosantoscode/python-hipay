@@ -340,7 +340,7 @@ class PaymentParams(HiPayTree):
         """to display free text under the shopping cart on payment pages."""
         self.text = text
         if text:
-            self.root = setTag(dict(Informations=text), self.root)
+            self.root = setTag(dict(informations=text), self.root)
         
 
     def setIssuerAccountLogin(self, hipay_account_login):
