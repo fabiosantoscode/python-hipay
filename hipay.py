@@ -534,7 +534,7 @@ def ParseAck(ack=None):
         return None
 
     tree = ET.fromstring(ack)
-    not_tampered_with = CheckMD5(tree)
+    not_tampered_with = CheckMD5(ack)
 
     # If this is a subscription
     try:
