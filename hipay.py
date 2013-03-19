@@ -566,7 +566,7 @@ def ParseAck(ack=None):
 def CheckMD5(tree):
     m = hashlib.md5()
     body = tree.find('result')
-    m.update(ET.tostring(ET.ElementTree(body).getroot()))
+    m.update(ET.tostring(ET.ElementTree(body).getroot(), method="html"))
 
     return tree.find('md5content').text == m.hexdigest()
 
