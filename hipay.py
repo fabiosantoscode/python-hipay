@@ -563,10 +563,25 @@ def ParseAck(ack=None):
              }
 
 
-def CheckMD5(tree):
+def CheckMD5(document):
     m = hashlib.md5()
-    body = tree.find('result')
-    m.update(ET.tostring(ET.ElementTree(body).getroot(), method="html"))
 
-    return tree.find('md5content').text == m.hexdigest()
+    try:
+        # use lxml if available to avoid ElementTree problem with
+        # empty tags.
+        # http://stackoverflow.com/q/15504593/1011311
+        import lxml.etree
+        import lxml.html
+        tree = lxml.etree.fromstring(document)
+        body = tree.find('result')
+        resultstr = lxml.html.tostring(body)
+    except ImportError:
+        # fall back to method which fails with empty tags
+        tree = ET.fromstring(document)
+        body = tree.find('result')
+        resultstr = ET.tostring(ET.ElementTree(body).getroot())
+
+    expected_md5 = tree.find('md5content').text.strip()
+    m.update(resultstr)
+    return expected_md5 == m.hexdigest()
 
