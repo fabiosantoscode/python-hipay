@@ -532,18 +532,15 @@ class HiPay(HiPayTree):
 def ParseAck(ack=None):
     if not ack:
         return None
+
     tree = ET.fromstring(ack)
-    body = tree.find('result')
-    m = hashlib.md5()
-    m.update(ET.tostring(ET.ElementTree(body).getroot()))
-        
+    not_tampered_with = CheckMD5(tree)
+
     # If this is a subscription
     try:
         subscriptionId = tree.find('result/subscriptionId').text
     except:
         subscriptionId = None
-            
-
                         
     if tree.find('result/merchantDatas') is not None:
         merchantDatas = dict([(i.tag, i.text) for i in tree.find('result/merchantDatas')])
@@ -561,5 +558,15 @@ def ParseAck(ack=None):
             'merchantDatas':merchantDatas,
             'subscriptionId':subscriptionId,
             'refProduct': tree.find('result/refProduct0').text,
-            'not_tempered_with': tree.find('md5content').text == m.hexdigest()
+            'not_tempered_with': not_tampered_with,
+            'not_tampered_with': not_tampered_with,
              }
+
+
+def CheckMD5(tree):
+    m = hashlib.md5()
+    body = tree.find('result')
+    m.update(ET.tostring(ET.ElementTree(body).getroot()))
+
+    return tree.find('md5content').text == m.hexdigest()
+

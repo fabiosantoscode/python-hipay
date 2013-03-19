@@ -367,7 +367,20 @@ class HiPayTest(TestCase):
                         'refProduct': 'REF6522',
                         'time': datetime.datetime(1900, 1, 1, 10, 32, 1),
                         'subscriptionId': '753EA685B55651DC40F0C2784D5E1170',
+                        'not_tampered_with': False,
                         'not_tempered_with': False}
 
         self.assertEqual(res, expected_res)
-        
+
+    def test_check_md5(self):
+        xml = '<r><md5content>%s</md5content>%s</r>'
+
+        result = u'<result> \n<some>a </some> <stuff> a</stuff></result>'
+        md5 = hashlib.md5()
+        md5.update(result)
+        xml_right_hash = xml % (md5.hexdigest(), result)
+        self.assertTrue(hipay.CheckMD5(ET.fromstring(xml_right_hash)))
+
+        xml_wrong_hash = xml % ('deadb33f', result)
+        self.assertFalse(hipay.CheckMD5(ET.fromstring(xml_wrong_hash)))
+
