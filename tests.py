@@ -379,8 +379,8 @@ class HiPayTest(TestCase):
         md5 = hashlib.md5()
         md5.update(result)
         xml_right_hash = xml % (md5.hexdigest(), result)
-        self.assertTrue(hipay.CheckMD5(ET.fromstring(xml_right_hash)))
+        self.assertTrue(hipay.CheckMD5(xml_right_hash))
 
         xml_wrong_hash = xml % ('deadb33f', result)
-        self.assertFalse(hipay.CheckMD5(ET.fromstring(xml_wrong_hash)))
+        self.assertFalse(hipay.CheckMD5(xml_wrong_hash))
 
